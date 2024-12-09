@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request  # 导入 Flask 应用类和模板、请求模块。
+import textblob
 
 app = Flask(__name__)  # 创建一个 Flask 应用实例
 
@@ -10,6 +11,16 @@ def index():
 def main():
     name=request.form.get("q")
     return(render_template('main.html'))
+
+@app.route("/SA", methods=['GET', 'POST']) 
+def SA():
+    return(render_template('SA.html'))
+
+@app.route("/SA_result", methods=['GET', 'POST']) 
+def SA_result():
+    q=request.form.get("q")
+    r=textblob.TextBlob(q).sentiment
+    return(render_template('SA_result.html',r=r))
 
 if __name__=='__main__':
     app.run()
